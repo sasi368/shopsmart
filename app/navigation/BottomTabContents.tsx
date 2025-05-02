@@ -19,13 +19,13 @@ const BottomTabContents = (props: any) => {
           type={item.type}
           name={item.icon}
           size={20}
-          color={focused ? Colors.BLACK : Colors.LIGHTGREY}
+          color={focused ? Colors.WHITE : Colors.LIGHTGREY}
         />
 
         <AppText
           textType="medium12"
           style={{
-            color: focused ? Colors.BLACK : Colors.LIGHTGREY,
+            color: focused ? Colors.WHITE : Colors.LIGHTGREY,
           }}>
           {item.label}
         </AppText>

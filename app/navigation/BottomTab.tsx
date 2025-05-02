@@ -16,7 +16,7 @@ const OptionLists = [
     type: AppIcons.FontAwesome5,
     icon: 'list-alt',
     component: ProductListScreen,
-    color: Colors.PRIMARY,
+    color: Colors.WHITE,
   },
   {
     route: 'CartBottomTab',
@@ -24,7 +24,7 @@ const OptionLists = [
     type: AppIcons.AntDesign,
     icon: 'shoppingcart',
     component: CartScreen,
-    color: Colors.PRIMARY,
+    color: Colors.WHITE,
   },
 
   {
@@ -33,7 +33,7 @@ const OptionLists = [
     type: AppIcons.FontAwesome,
     icon: 'user-circle-o',
     component: Profile,
-    color: Colors.PRIMARY,
+    color: Colors.WHITE,
   },
 ];
 
@@ -50,7 +50,7 @@ export default function BottomTab() {
         },
         tabBarStyle: {
           height: 55,
-          backgroundColor: Colors.WHITE,
+          backgroundColor: Colors.PRIMARY,
           borderTopWidth: 0.5,
         },
       }}>

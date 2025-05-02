@@ -29,7 +29,7 @@ const CartScreen = () => {
 
   const renderCartItem = ({item}: {item: any}) => (
     <View style={styles.card}>
-      <Image source={{uri: item.image}} style={styles.image} />
+      <Image source={{uri: item.thumbnail}} style={styles.image} />
       <View style={styles.details}>
         <AppText style={styles.title}>{item.title}</AppText>
         <AppText style={styles.price}>
@@ -54,7 +54,7 @@ const CartScreen = () => {
           </TouchableOpacity>
           <AppText style={styles.quantityText}>{item.quantity}</AppText>
           <TouchableOpacity
-            style={styles.quantityButton}
+            style={styles.quantityButton2}
             onPress={() => dispatch(increaseQuantity(item.id))}>
             <Icon
               type={AppIcons.AntDesign}
@@ -82,7 +82,7 @@ const CartScreen = () => {
 
   const renderWishlistItem = ({item}: {item: any}) => (
     <View style={styles.card}>
-      <Image source={{uri: item.image}} style={styles.image} />
+      <Image source={{uri: item.thumbnail}} style={styles.image} />
       <View style={styles.details}>
         <AppText style={styles.title}>{item.title}</AppText>
         <AppText style={styles.price}>${item.price}</AppText>
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f0f0f0',
   },
   selectedButton: {
-    backgroundColor: '#007bff',
+    backgroundColor: Colors.PRIMARY,
   },
   segmentText: {
     fontSize: 16,
@@ -236,7 +236,15 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   quantityButton: {
-    backgroundColor: '#007bff',
+    backgroundColor: Colors.RED,
+    padding: 12,
+    borderRadius: 5,
+    marginHorizontal: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  quantityButton2: {
+    backgroundColor: Colors.GREEN,
     padding: 12,
     borderRadius: 5,
     marginHorizontal: 10,

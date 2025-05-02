@@ -23,10 +23,13 @@ import {Colors} from '../global/themes/Colors';
 
 interface Product {
   id: number;
-  image: string;
+  thumbnail: string;
   title: string;
   price: number;
+  rating: number;
 }
+
+const PAGE_SIZE = 10;
 
 const ProductListScreen: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -43,8 +46,12 @@ const ProductListScreen: React.FC = () => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     try {
-      const response = await fetchPaginatedProducts(10, (pageNumber - 1) * 10);
-      setProducts(prev => (isRefresh ? response : [...prev, ...response]));
+      const skip = (pageNumber - 1) * PAGE_SIZE;
+      const response = await fetchPaginatedProducts(PAGE_SIZE, skip);
+      const fetchedProducts = response.products || [];
+      setProducts(prev =>
+        isRefresh ? fetchedProducts : [...prev, ...fetchedProducts],
+      );
       setPage(pageNumber);
     } catch (e) {
       setError(true);
@@ -55,7 +62,7 @@ const ProductListScreen: React.FC = () => {
   };
 
   useEffect(() => {
-    loadProducts(page);
+    loadProducts(1);
   }, []);
 
   const toggleCart = (product: Product) => {
@@ -74,37 +81,46 @@ const ProductListScreen: React.FC = () => {
     }
   };
 
-  const renderItem = ({item}: {item: Product}) => (
-    <View style={styles.card}>
-      <Image source={{uri: item.image}} style={styles.image} />
-      <AppText textType="medium14" style={styles.title}>
-        {item.title}
-      </AppText>
-      <AppText textType="bold14" style={styles.price}>
-        ${item.price}
-      </AppText>
-      <View style={styles.buttonsContainer}>
+  const renderItem = ({item}: {item: Product}) => {
+    const isWishlisted = wishlist.find((i: any) => i.id === item.id);
+    const isAdded = cart.find((i: any) => i.id === item.id);
+
+    return (
+      <View style={styles.card}>
         <TouchableOpacity
-          style={[styles.button, styles.cartButton]}
-          onPress={() => toggleCart(item)}>
-          <AppText textType="regular12" style={styles.buttonText}>
-            {cart.find((i: any) => i.id === item.id)
-              ? 'Remove from Cart'
-              : 'Add to Cart'}
-          </AppText>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.button, styles.wishlistButton]}
+          style={styles.wishlistIconContainer}
           onPress={() => toggleWishlist(item)}>
-          <AppText textType="regular12" style={styles.buttonText}>
-            {wishlist.find((i: any) => i.id === item.id)
-              ? 'Remove from Wishlist'
-              : 'Add to Wishlist'}
+          <AppText textType="bold18" style={styles.wishlistIcon}>
+            {isWishlisted ? '⭐' : '☆'}
           </AppText>
         </TouchableOpacity>
+        <Image source={{uri: item.thumbnail}} style={styles.image} />
+        <AppText textType="medium14" style={styles.title}>
+          {item.title}
+        </AppText>
+        <AppText textType="regular12" style={styles.rating}>
+          Rating: ⭐ {item.rating}
+        </AppText>
+        <AppText textType="bold14" style={styles.price}>
+          ${item.price}
+        </AppText>
+        <View style={styles.buttonsContainer}>
+          <TouchableOpacity
+            style={[
+              styles.button,
+              {
+                backgroundColor: isAdded ? Colors.RED : Colors.GREEN,
+              },
+            ]}
+            onPress={() => toggleCart(item)}>
+            <AppText textType="regular12" style={styles.buttonText}>
+              {isAdded ? 'Remove from Cart' : 'Add to Cart'}
+            </AppText>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
-  );
+    );
+  };
 
   if (loading && products.length === 0) {
     return (
@@ -141,6 +157,8 @@ const ProductListScreen: React.FC = () => {
         data={products}
         keyExtractor={item => item.id.toString()}
         renderItem={renderItem}
+        numColumns={2}
+        columnWrapperStyle={styles.row}
         onEndReached={() => loadProducts(page + 1)}
         onEndReachedThreshold={0.5}
         refreshControl={
@@ -162,51 +180,69 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  row: {
+    justifyContent: 'space-between',
+    paddingHorizontal: 10,
+  },
   card: {
     backgroundColor: Colors.WHITE,
-    margin: 10,
-    padding: 15,
+    width: '48%',
+    marginVertical: 10,
+    padding: 10,
     borderRadius: 10,
     shadowColor: '#000',
     shadowOpacity: 0.1,
-    shadowRadius: 10,
+    shadowRadius: 5,
     elevation: 3,
+    position: 'relative',
+  },
+  wishlistIconContainer: {
+    position: 'absolute',
+    top: 8,
+    right: 8,
+    zIndex: 1,
+  },
+  wishlistIcon: {
+    fontSize: 20,
+    color: Colors.PRIMARY,
   },
   image: {
-    height: 150,
+    height: 120,
     resizeMode: 'contain',
+    marginBottom: 5,
   },
   title: {
-    marginVertical: 10,
+    marginTop: 5,
   },
-  price: {},
+  rating: {
+    marginVertical: 5,
+    color: Colors.GREY,
+  },
+  price: {
+    marginBottom: 5,
+  },
   buttonsContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     marginTop: 10,
   },
   button: {
-    padding: 10,
+    padding: 8,
     borderRadius: 5,
     flex: 1,
-    marginHorizontal: 5,
+    marginHorizontal: 2,
     alignItems: 'center',
-  },
-  cartButton: {
-    backgroundColor: Colors.GREEN,
-  },
-  wishlistButton: {
-    backgroundColor: '#007bff',
   },
   buttonText: {
     color: Colors.WHITE,
+    fontSize: 12,
   },
   error: {
     color: 'red',
     marginBottom: 10,
   },
   retry: {
-    color: '#007bff',
+    color: Colors.PRIMARY,
     textDecorationLine: 'underline',
   },
 });
