@@ -82,10 +82,7 @@ src/
 
 ---
 
-## 📝 License
 
+## 🎥 Demo Video
 
-MIT
-
-Demo Video
 https://github.com/user-attachments/assets/41d1cac8-d340-47bc-9b0f-9a4accd67b82
