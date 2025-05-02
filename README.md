@@ -2,7 +2,7 @@
 
 A simple yet functional React Native mobile application featuring:
 
-- Product List with pagination
+- Paginated product fetch from [DummyJSON API](http://dummyjson.com/docs/products)  
 - Cart and Wishlist management (Redux)
 - Profile screen with avatar upload
 - TypeScript with strict mode
@@ -29,6 +29,7 @@ A simple yet functional React Native mobile application featuring:
 | **React Native**                | Cross-platform mobile development.              |
 | **TypeScript (strict)**         | Type safety and better tooling.                 |
 | **Redux Toolkit**               | Manage cart and wishlist state cleanly.         |
+| **Redux Persist**               | Persist Redux store data locally                |
 | **React Navigation**            | Smooth screen navigation.                       |
 | **Axios**                       | Consistent, promise-based HTTP client.          |
 | **react-native-image-picker**   | Enables image selection from gallery or camera. |
@@ -86,3 +87,7 @@ src/
 ## 🎥 Demo Video
 
 https://github.com/user-attachments/assets/41d1cac8-d340-47bc-9b0f-9a4accd67b82
+
+## 📥 **Download APK**: 
+
+https://drive.google.com/file/d/1dWybVLz74WSpC5GYTwgnA6YeIPbjvRbV/view?usp=sharing
